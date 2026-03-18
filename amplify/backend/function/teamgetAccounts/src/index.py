@@ -19,12 +19,17 @@ def get_mgmt_account_id():
         return response['Organization']['MasterAccountId']
     except ClientError as e:
         print(e.response['Error']['Message'])
+        # Return a sentinel value to ensure management account is excluded if lookup fails
+        return None
 
 
 mgmt_account_id = get_mgmt_account_id()
 
 
 def handler(event, context):
+    if mgmt_account_id is None:
+        print("Error: Could not determine management account ID. Returning empty list for safety.")
+        return []
     account = []
     deployed_in_mgmt = True if ACCOUNT_ID == mgmt_account_id else False
     try:

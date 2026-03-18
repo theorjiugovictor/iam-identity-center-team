@@ -519,7 +519,7 @@ def handler(event, context):
                     'status': 'error'
                     }
             return updateRequest(input)
-        print("Received event: %s" % json.dumps(request))
+        print("Received event: request_id=%s status=%s account=%s" % (request["id"], request["status"], request["accountId"]))
         userId = get_user((data["username"]["S"])[4:])
         request["userId"] = userId
         eligible = get_eligibility(request, userId)

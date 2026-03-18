@@ -19,7 +19,7 @@ import {
   ColumnLayout,
 } from "@awsui/components-react";
 import { useCollection } from "@awsui/collection-hooks";
-import { API, graphqlOperation } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
 import {
   onUpdateRequests,
   onCreateRequests,
@@ -28,6 +28,8 @@ import { updateStatus, sessions, getRequest, getSetting } from "../Shared/Reques
 import { useHistory } from "react-router-dom";
 import Status from "../Shared/Status";
 import "../../index.css";
+
+const client = generateClient();
 
 const COLUMN_DEFINITIONS = [
   {
@@ -260,7 +262,7 @@ function Approvals(props) {
   }
 
   function approveEvent() {
-    API.graphql(graphqlOperation(onUpdateRequests)).subscribe({
+    client.graphql({ query: onUpdateRequests }).subscribe({
       next: () => {
         views();
       },
@@ -269,8 +271,8 @@ function Approvals(props) {
   }
 
   function createEvent() {
-    API.graphql(graphqlOperation(onCreateRequests)).subscribe({
-      next: ({ value }) => {
+    client.graphql({ query: onCreateRequests }).subscribe({
+      next: ({ data }) => {
         views();
       },
       error: (error) => console.warn(error),

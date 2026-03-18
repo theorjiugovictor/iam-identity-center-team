@@ -11,7 +11,7 @@ import Header from "@awsui/components-react/header";
 import SpaceBetween from "@awsui/components-react/space-between";
 import Button from "@awsui/components-react/button";
 import Textarea from "@awsui/components-react/textarea";
-import moment from "moment";
+import dayjs from "dayjs";
 import { DatePicker } from "antd";
 import "../../index.css";
 import React, { useState, useEffect } from "react";
@@ -25,9 +25,11 @@ import {
   fetchPolicy,
 } from "../Shared/RequestService";
 import { useHistory } from "react-router-dom";
-import { API, graphqlOperation } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
 import { onPublishPolicy } from "../../graphql/subscriptions";
 import params from "../../parameters.json";
+
+const client = generateClient();
 
 function Request(props) {
   const [email, setEmail] = useState("");
@@ -125,9 +127,9 @@ function Request(props) {
   };
 
   function publishEvent() {
-    const subscription = API.graphql(graphqlOperation(onPublishPolicy)).subscribe({
+    const subscription = client.graphql({ query: onPublishPolicy }).subscribe({
       next: (result) => {
-        const policy = result.value.data.onPublishPolicy.policy;
+        const policy = result.data.onPublishPolicy.policy;
         if (policy?.length > 0) {
           setItem(policy);
           setAccounts(concatenateAccounts(policy));
@@ -169,7 +171,7 @@ function Request(props) {
     getPolicy();
     props.addNotification([]);
     getMgmtPs();
-    setTime(moment().format());
+    setTime(dayjs().format());
     publishEvent()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -438,13 +440,13 @@ function Request(props) {
               <DatePicker
                 showTime
                 format="YYYY-MM-DD HH:mm"
-                defaultValue={moment()}
+                defaultValue={dayjs()}
                 // disabledDate={disabledDate}
                 onChange={(event) => {
                   setTimeError();
                   if (event) {
-                    setTime(event._d);
-                    console.log(event._d);
+                    setTime(event.toDate());
+                    console.log(event.toDate());
                   }
                 }}
               />

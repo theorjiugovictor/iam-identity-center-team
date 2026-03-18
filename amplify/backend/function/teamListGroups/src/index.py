@@ -4,7 +4,15 @@
 # http: // aws.amazon.com/agreement or other written agreement between Customer and either
 # Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 import boto3
+import re
 from botocore.exceptions import ClientError
+
+
+# Regex pattern for valid UUID group IDs
+UUID_PATTERN = re.compile(
+    r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+    re.IGNORECASE
+)
 
 
 def get_identiy_store_id():
@@ -38,5 +46,9 @@ def handler(event, context):
     members = []
     groupIds = event["arguments"]["groupIds"]
     for groupId in groupIds:
+        # Validate group ID format to prevent arbitrary group enumeration
+        if not groupId or not UUID_PATTERN.match(str(groupId).strip()):
+            print(f"Invalid group ID format rejected: {groupId}")
+            continue
         members.extend(list_idc_group_membership(groupId))
     return {"members": members}

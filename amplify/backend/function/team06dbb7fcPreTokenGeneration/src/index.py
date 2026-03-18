@@ -98,7 +98,11 @@ def list_idc_group_membership(userId):
 def handler(event, context):
     team_admin_group, team_auditor_group = get_team_groups()
     
-    user = event["userName"].split("_", 1)[1]
+    try:
+        user = event["userName"].split("_", 1)[1]
+    except (IndexError, AttributeError) as e:
+        print(f"Error parsing userName '{event.get('userName')}': {e}")
+        return event
     userId = get_user(user)
     admin = get_group(team_admin_group)
     auditor = get_group(team_auditor_group)

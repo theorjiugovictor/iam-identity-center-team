@@ -8,7 +8,7 @@ import { Divider } from "antd";
 import Status from "./Status";
 import Timer from "../Sessions/Timer";
 import "../../index.css";
-import "antd/dist/antd.css";
+
 
 function convertAwsDateTime(awsDateTime) {
   // Parse AWS datetime string into a Date object

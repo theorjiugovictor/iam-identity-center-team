@@ -39,6 +39,12 @@ applicationACSURL: https://d1s8z5724fsfj7-main.auth.amazoncognito.com/saml2/idpr
 applicationSAMLAudience: urn:amazon:cognito:sp:us-east-1_GXaUCfcno
 ```
 
+applicationStartURL: https://d30a2cgse3dsjr-main.auth.eu-west-1.amazoncognito.com/authorize?client_id=6sdb9sfa4hi7mcvic6oihfuolq&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=https://main.d30a2cgse3dsjr.amplifyapp.com/&idp_identifier=team
+
+applicationACSURL: https://d30a2cgse3dsjr-main.auth.eu-west-1.amazoncognito.com/saml2/idpresponse
+
+applicationSAMLAudience: urn:amazon:cognito:sp:eu-west-1_8Fzudmzev
+
 ---
 
 ## Configure IAM Identity Center SAML Integration

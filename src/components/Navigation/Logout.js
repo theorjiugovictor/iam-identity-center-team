@@ -5,10 +5,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import "../../index.css";
-import "antd/dist/antd.css";
-import { Menu, Dropdown, Typography } from "antd";
+import { Dropdown, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Auth } from "aws-amplify";
+import { signOut as amplifySignOut } from "aws-amplify/auth";
 import { useHistory } from "react-router-dom";
 
 const { Text } = Typography;
@@ -16,35 +15,38 @@ const { Text } = Typography;
 function Logout(props) {
   const user = props.user;
   const history = useHistory();
-  const menu = (
-    <Menu>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => {
-            signOut().then(() => history.push("/"));
-          }}
-        >
-          Logout
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" href="https://github.com/aws-samples/iam-identity-center-team/issues">
-          Report Bug
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" href="https://github.com/aws-samples/iam-identity-center-team/issues">
-          Request Feature
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
+
+  const menuItems = {
+    items: [
+      {
+        key: "logout",
+        label: "Logout",
+        onClick: () => {
+          signOut().then(() => history.push("/"));
+        },
+      },
+      {
+        key: "bug",
+        label: (
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/aws-samples/iam-identity-center-team/issues">
+            Report Bug
+          </a>
+        ),
+      },
+      {
+        key: "feature",
+        label: (
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/aws-samples/iam-identity-center-team/issues">
+            Request Feature
+          </a>
+        ),
+      },
+    ],
+  };
 
   async function signOut() {
     try {
-      await Auth.signOut();
+      await amplifySignOut();
     } catch (error) {
       console.log("error signing out");
     }
@@ -52,7 +54,7 @@ function Logout(props) {
 
   return (
     <div>
-      <Dropdown overlay={menu} placement="topRight">
+      <Dropdown menu={menuItems} placement="topRight">
         <a className="a" onClick={(e) => e.preventDefault()}>
           <Text
             style={{
