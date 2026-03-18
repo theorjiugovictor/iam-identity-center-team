@@ -467,9 +467,10 @@ export async function invalidateOUCache(ouIds) {
         }
       }
     `;
-    const response = await API.graphql(
-      graphqlOperation(mutation, { ouIds })
-    );
+    const response = await client.graphql({
+      query: mutation,
+      variables: { ouIds }
+    });
     return response.data.invalidateOUCache;
   } catch (err) {
     console.log("error invalidating OU cache", err);
@@ -487,9 +488,10 @@ export async function validateRequest(accountId, roleId, userId, groupIds) {
         }
       }
     `;
-    const response = await API.graphql(
-      graphqlOperation(mutation, { accountId, roleId, userId, groupIds })
-    );
+    const response = await client.graphql({
+      query: mutation,
+      variables: { accountId, roleId, userId, groupIds }
+    });
     return response.data.validateRequest;
   } catch (err) {
     console.log("error validating request", err);
