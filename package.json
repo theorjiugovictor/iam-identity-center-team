@@ -68,6 +68,7 @@
   "overrides": {
     "@svgr/webpack": "^7.0.0",
     "semver": "^7.5.3",
-    "underscore": "^1.13.7"
+    "underscore": "^1.13.7",
+    "fast-xml-parser": "5.5.6"
   }
 }

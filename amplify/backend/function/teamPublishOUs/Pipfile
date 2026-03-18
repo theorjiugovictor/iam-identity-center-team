@@ -7,10 +7,11 @@ verify_ssl = true
 
 [packages]
 src = {editable = true, path = "./src"}
-requests = "*"
+requests = ">=2.32.4"
 requests-aws-sign = "*"
 setuptools = "*"
-wheel = "*"
+wheel = ">=0.46.1"
+pip = ">=25.0"
 
 [requires]
 python_version = "3.10"
